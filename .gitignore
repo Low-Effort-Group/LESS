@@ -15,3 +15,6 @@ target
 
 # Nix develop output
 flake.lock
+
+# Added by cargo
+/target

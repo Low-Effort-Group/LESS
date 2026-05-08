@@ -1,0 +1,12 @@
+[package]
+name = "slop-system"
+description = """
+A short-form braindead content generator.
+"""
+version = "0.1.0"
+edition = "2024"
+homepage = "https://low-effort.work/"
+license = "GPLv3"
+repository = "https://github.com/Low-Effort-Group/LESS"
+
+[dependencies]
