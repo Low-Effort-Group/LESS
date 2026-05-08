@@ -18,6 +18,13 @@
 
           buildInputs = with pkgs; [
             gcc
+            xorg.libX11
+            xorg.libXcursor
+            xorg.libXrandr
+            xorg.libXinerama
+            xorg.libXi 
+            libxkbcommon
+            libGL
             pkg-config
             git
             rustc
@@ -26,9 +33,17 @@
             cargo
             clippy
           ];
-
-          # shellHook = ''
-          # '';
+          shellHook = ''
+            export LD_LIBRARY_PATH=${pkgs.lib.makeLibraryPath [
+              pkgs.xorg.libX11
+              pkgs.xorg.libXcursor
+              pkgs.xorg.libXrandr
+              pkgs.xorg.libXinerama
+              pkgs.xorg.libXi
+              pkgs.libxkbcommon
+              pkgs.libGL
+            ]}:$LD_LIBRARY_PATH
+          '';
         };
       }
     );
