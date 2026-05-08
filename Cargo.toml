@@ -10,3 +10,4 @@ license = "GPLv3"
 repository = "https://github.com/Low-Effort-Group/LESS"
 
 [dependencies]
+rand = "0.10.1"
