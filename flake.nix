@@ -22,6 +22,7 @@
             git
             rustc
             rustfmt
+            python3
             cargo
             clippy
           ];
