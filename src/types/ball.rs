@@ -6,8 +6,7 @@ use crate::video::{HEIGHT, WIDTH};
 
 // Get rid of these println! macros. They are only here for base implementation structure.
 /// Bouncing ball
-pub fn run(content: &ContentType, time: f32) -> RgbaImage {
-
+pub fn run(time: f32) -> RgbaImage {
     // <add ball bounce related stuff here>
     let mut img = RgbaImage::new(WIDTH, HEIGHT);
 

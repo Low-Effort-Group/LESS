@@ -1,7 +1,7 @@
 mod encoder;
 pub mod graphics;
 use crate::video::encoder::*;
-use crate::types::TYPE_BALL;
+use crate::types::{TYPE_BALL, TYPES, ContentType};
 
 pub const WIDTH: u32 = 1080;
 pub const HEIGHT: u32 = 1920;
@@ -16,6 +16,11 @@ pub fn setup_encoder() {
     let total_frames = FPS * duration_secs;
 
     println!("Recording {} frames at {}x{}", total_frames, WIDTH, HEIGHT);
+
+    let content: ContentType = TYPES[0];
+
+    println!("simulation name: {}", content.name);
+    println!("simulation description: {}", content.description);
 
     for frame_num in 0..total_frames {
         let time = frame_num as f32 / FPS as f32;
