@@ -8,7 +8,7 @@ pub struct VideoEncoder {
 }
 
 impl VideoEncoder {
-    pub fn new(width: u32, height: u32, fps: u32, output_path: &str) -> Option<Self> {
+    pub fn new(width: u32, height: u32, fps: u32, oustput_path: &str) -> Option<Self> {
         let mut process = Command::new("ffmpeg")
             .args([
                 "-f",
