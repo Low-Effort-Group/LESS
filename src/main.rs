@@ -1,8 +1,8 @@
 mod startup;
 use crate::startup::startup;
 
-mod types;
 mod video;
+mod types;
 
 fn main() {
     startup();

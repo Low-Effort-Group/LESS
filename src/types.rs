@@ -1,6 +1,8 @@
 mod ball;
 mod cube;
 
+use image::RgbaImage;
+
 /// This struct defines the type of content, and describes its properties. Example: A ball bouncing physics simulation
 #[derive(Debug)]
 pub struct ContentType {
@@ -9,12 +11,12 @@ pub struct ContentType {
     /// Describes the purpose of the type. Something like this shall be included in description/title of video.
     description: &'static str,
     /// Pointer to the function to be called. Arguments and return type subject to change.
-    call: fn(&ContentType) -> (),
+    call: fn(&ContentType, f32) -> RgbaImage,
 }
 
 impl ContentType {
-    pub fn invoke(&self) {
-        (self.call)(self)
+    pub fn invoke(&self, time: f32) -> RgbaImage {
+        (self.call)(self, time)
     }
 }
 
@@ -37,5 +39,5 @@ const TYPE_CUBE_MUSIC: ContentType = ContentType {
 const TYPES: &[ContentType] = &[TYPE_BALL, TYPE_CUBE_MUSIC];
 
 pub fn call_id(id: usize) {
-    TYPES[id].invoke();
+    TYPES[id].invoke(0.0);
 }
