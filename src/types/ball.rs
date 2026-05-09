@@ -43,17 +43,12 @@ impl Ball {
         }
     }
     pub fn draw(&self, img: &mut RgbaImage) {
-        let color = HSL {
-            h: 180.0,
-            s: 1.0,
-            l: 0.5,
-        };
         draw_circle(
             img,
             self.x as i32,
             self.y as i32,
             self.radius as i32,
-            color.to_rgb(),
+            HSL { h: 240.0, s: 1.0, l: 0.5 }.to_rgb(),
         );
     }
 }
