@@ -13,7 +13,7 @@ pub struct Ball {
 }
 
 impl Ball {
-    fn update(&mut self, dt: f32) {
+    pub fn update(&mut self, dt: f32) {
         self.x += self.vx * dt;
         self.y += self.vy * dt;
 
@@ -33,7 +33,7 @@ impl Ball {
             self.vy = -self.vy;
         }
     }
-    fn draw(&self, img: &mut RgbaImage) {
+    pub fn draw(&self, img: &mut RgbaImage) {
         draw_circle(
             img,
             self.x as i32,

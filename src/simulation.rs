@@ -17,8 +17,11 @@ pub fn setupSimulation() -> Vec<Ball> {
     vec![ball]
 }
 
-pub fn newFrame(balls: Vec<Ball>) -> RgbaImage {
-    RgbaImage::new(WIDTH, HEIGHT)
-    
-    
+pub fn newFrame(balls: &mut Vec<Ball>) -> RgbaImage {
+    let mut img = RgbaImage::new(WIDTH, HEIGHT);
+    balls.into_iter().for_each(|mut ball| {
+        ball.update(1.0 / 60.0);
+        ball.draw(&mut img);
+    });
+    img
 }
