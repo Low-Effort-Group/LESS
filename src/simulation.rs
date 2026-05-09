@@ -11,7 +11,8 @@ pub fn setupSimulation() -> Vec<Ball> {
         vx: 200.0, // pixels per second
         vy: 150.0, // pixels per second
         radius: 30.0,
-        gravity: 500.0, // pixels per second squared
+        gravity: 1000.0, // pixels per second squared
+        restitution: 0.8, // bounciness
     };
 
     let dt = 1.0 / 60.0; // simulate at 60 FPS
