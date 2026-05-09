@@ -3,6 +3,7 @@ use crate::startup::startup;
 
 mod video;
 mod types;
+mod simulation;
 
 fn main() {
     startup();

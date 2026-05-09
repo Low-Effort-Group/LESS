@@ -1,7 +1,8 @@
 mod encoder;
 pub mod graphics;
 use crate::video::encoder::*;
-use crate::types::{TYPE_BALL, TYPES, ContentType};
+use crate::types::ball::Ball;
+use crate::simulation;
 
 pub const WIDTH: u32 = 1080;
 pub const HEIGHT: u32 = 1920;
@@ -17,20 +18,26 @@ pub fn setup_encoder() {
 
     println!("Recording {} frames at {}x{}", total_frames, WIDTH, HEIGHT);
 
-    let content: ContentType = TYPES[0];
+    // let content: ContentType = TYPES[0];
 
-    println!("simulation name: {}", content.name);
-    println!("simulation description: {}", content.description);
+    // println!("simulation name: {}", content.name);
+    // println!("simulation descripticon: {}", content.description);
+
+    //setup simulation
+    let balls = crate::simulation::setupSimulation();
 
     for frame_num in 0..total_frames {
-        let time = frame_num as f32 / FPS as f32;
+        let frame_start = std::time::Instant::now();
         // This draws the ball (ball.rs)
-        let img = TYPE_BALL.invoke(time);
+        let mut img = simulation::newFrame(balls.clone());
+
+        
         encoder.write_frame(&img);
 
-        if frame_num % 60 == 0 {
-            println!("Frame {}/{}", frame_num, total_frames);
-        }
+        //print wich frame is done and frame time
+        let time = frame_start.elapsed().as_secs_f32();
+        println!("Frame {}/{}, in {} seconds", frame_num, total_frames, time);
+        
     }
 
     encoder.finish();

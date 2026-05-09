@@ -1,30 +1,45 @@
-use crate::types::ContentType;
 use crate::video::graphics::*;
 use image::{Rgba, RgbaImage};
 
 use crate::video::{HEIGHT, WIDTH};
 
-/// Bouncing ball
-pub fn run(time: f32) -> RgbaImage {
-    // <add ball bounce related stuff here>
-    let mut img = RgbaImage::new(WIDTH, HEIGHT);
+#[derive(Clone)]
+pub struct Ball {
+    pub x: f32,
+    pub y: f32,
+    pub vx: f32,
+    pub vy: f32,
+    pub radius: f32,
+}
 
-    // Fill background (black)
-    for y in 0..HEIGHT {
-        for x in 0..WIDTH {
-            img.put_pixel(x, y, Rgba([0, 0, 0, 255]));
+impl Ball {
+    fn update(&mut self, dt: f32) {
+        self.x += self.vx * dt;
+        self.y += self.vy * dt;
+
+        // Bounce off walls
+        if self.x - self.radius < 0.0 {
+            self.x = self.radius;
+            self.vx = -self.vx;
+        } else if self.x + self.radius > WIDTH as f32 {
+            self.x = WIDTH as f32 - self.radius;
+            self.vx = -self.vx;
+        }
+        if self.y - self.radius < 0.0 {
+            self.y = self.radius;
+            self.vy = -self.vy;
+        } else if self.y + self.radius > HEIGHT as f32 {
+            self.y = HEIGHT as f32 - self.radius;
+            self.vy = -self.vy;
         }
     }
-
-    // Draw moving circle
-    let circle_x = (WIDTH as f32 / 2.0 + (time * 2.0).sin() * 200.0) as i32;
-    let circle_y = (HEIGHT as f32 / 2.0 + (time * 1.5).cos() * 200.0) as i32;
-    draw_circle(&mut img, circle_x, circle_y, 50, Rgba([255, 0, 0, 255]));
-
-    // Draw rotating rectangle
-    draw_rect(&mut img, 400, 800, 200, 100, Rgba([0, 255, 0, 255]));
-
-    // Draw frame rate
-    // Draw text here
-    img
+    fn draw(&self, img: &mut RgbaImage) {
+        draw_circle(
+            img,
+            self.x as i32,
+            self.y as i32,
+            self.radius as i32,
+            Rgba([255, 0, 0, 255]),
+        );
+    }
 }
