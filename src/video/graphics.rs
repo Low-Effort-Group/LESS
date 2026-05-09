@@ -5,7 +5,7 @@ pub fn draw_circle(
     cx: i32,
     cy: i32,
     radius: i32,
-    color: Rgba<u8>,
+    color: (u8, u8, u8),
 ) {
     let r_sq = radius * radius;
     for dy in -radius..=radius {
@@ -14,7 +14,7 @@ pub fn draw_circle(
                 let x = (cx + dx) as u32;
                 let y = (cy + dy) as u32;
                 if x < img.width() && y < img.height() {
-                    img.put_pixel(x, y, color);
+                    img.put_pixel(x, y, Rgba([color.0, color.1, color.2, 255]));
                 }
             }
         }

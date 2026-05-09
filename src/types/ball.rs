@@ -1,5 +1,6 @@
+use hsl::HSL;
 use crate::video::graphics::*;
-use image::{Rgba, RgbaImage};
+use image::{RgbaImage};
 
 use crate::video::{HEIGHT, WIDTH};
 
@@ -42,12 +43,17 @@ impl Ball {
         }
     }
     pub fn draw(&self, img: &mut RgbaImage) {
+        let color = HSL {
+            h: 180.0,
+            s: 1.0,
+            l: 0.5,
+        };
         draw_circle(
             img,
             self.x as i32,
             self.y as i32,
             self.radius as i32,
-            Rgba([255, 0, 0, 255]),
+            color.to_rgb(),
         );
     }
 }
