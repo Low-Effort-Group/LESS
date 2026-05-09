@@ -25,6 +25,7 @@
             xorg.libXi 
             libxkbcommon
             libGL
+            ffmpeg
             pkg-config
             git
             rustc

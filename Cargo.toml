@@ -10,6 +10,7 @@ license = "GPLv3"
 repository = "https://github.com/Low-Effort-Group/LESS"
 
 [dependencies]
+image = { version = "0.25.10", default-features = false }
 rand = "0.10.1"
 
 [profile.release]

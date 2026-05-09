@@ -13,14 +13,14 @@ pub struct ContentType {
 }
 
 impl ContentType {
-    pub fn invoke (&self) {
+    pub fn invoke(&self) {
         (self.call)(self)
     }
 }
 
 // For these content options, we need to change name and description to something less "formal"
 
-/// Ball bouncing 
+/// Ball bouncing
 pub const TYPE_BALL: ContentType = ContentType {
     name: "Ball",
     description: "Physics simulation where ball bounces",
@@ -38,5 +38,4 @@ const TYPES: &[ContentType] = &[TYPE_BALL, TYPE_CUBE_MUSIC];
 
 pub fn call_id(id: usize) {
     TYPES[id].invoke();
-    ()
 }
