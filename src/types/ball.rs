@@ -10,10 +10,15 @@ pub struct Ball {
     pub vx: f32,
     pub vy: f32,
     pub radius: f32,
+    pub gravity: f32,
 }
 
 impl Ball {
     pub fn update(&mut self, dt: f32) {
+        // Apply gravity
+        self.vy += self.gravity * dt;
+
+        // Update position
         self.x += self.vx * dt;
         self.y += self.vy * dt;
 

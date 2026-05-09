@@ -9,7 +9,10 @@ pub const HEIGHT: u32 = 1920;
 pub const FPS: u32 = 60;
 
 pub fn setup_encoder() {
-    let duration_secs = 5;
+    //start timer
+    let timer = std::time::Instant::now();
+
+    let duration_secs = 20;
 
     let mut encoder =
         VideoEncoder::new(WIDTH, HEIGHT, FPS, "output.mp4").expect("Failed to start ffmpeg");
@@ -30,7 +33,6 @@ pub fn setup_encoder() {
         let frame_start = std::time::Instant::now();
         // This draws the ball (ball.rs)
         let mut img = simulation::newFrame(&mut balls);
-
         
         encoder.write_frame(&img);
 
@@ -41,5 +43,6 @@ pub fn setup_encoder() {
     }
 
     encoder.finish();
+    println!("Encoding finished in {} seconds", timer.elapsed().as_secs_f32());
     println!("Video saved to output.mp4.");
 }
