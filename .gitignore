@@ -13,8 +13,5 @@ target
 # Contains mutation testing data
 **/mutants.out*/
 
-# Nix develop output
-flake.lock
-
 # Added by cargo
 /target
