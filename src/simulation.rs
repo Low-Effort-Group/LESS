@@ -22,7 +22,7 @@ pub fn setupSimulation() -> (Vec<Ball>, Vec<Circle>) {
             x: WIDTH as f32 / 2.0,
             y: HEIGHT as f32 / 2.0,
             radius: 300.0,
-            thickness: 5.0,
+            thickness: 50.0,
             color: HSL { h: 120.0, s: 1.0, l: 0.5 },
             normal: false
         };

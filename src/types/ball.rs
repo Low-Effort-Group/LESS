@@ -2,6 +2,7 @@ use hsl::HSL;
 use crate::video::graphics::*;
 use image::{RgbaImage};
 use rand::Rng;
+use log::*;
 
 use crate::video::{HEIGHT, WIDTH};
 use crate::types::objects::Circle;
@@ -30,10 +31,12 @@ impl Ball {
 
         // Bounce off walls
         if self.x - self.radius < 0.0 {
+            trace!("Ball hit left wall");
             self.x = self.radius;
             self.vx = -self.vx * self.friction;
             self.color.h = (self.color.h + 30.0) % 360.0; // Change color on bounce
         } else if self.x + self.radius > WIDTH as f32 {
+            trace!("Ball hit right wall");
             self.x = WIDTH as f32 - self.radius;
             self.vx = -self.vx * self.friction;
             self.color.h = (self.color.h + 30.0) % 360.0; // Change color on bounce
@@ -41,10 +44,12 @@ impl Ball {
 
         // Bounce off floor and ceiling
         if self.y - self.radius < 0.0 {
+            trace!("Ball hit floor");
             self.y = self.radius;
             self.vy = -self.vy * self.restitution;
             self.color.h = (self.color.h + 30.0) % 360.0; // Change color on bounce
         } else if self.y + self.radius > HEIGHT as f32 {
+            trace!("Ball hit ceiling");
             self.y = HEIGHT as f32 - self.radius;
             self.vy = -self.vy * self.restitution;
             self.color.h = (self.color.h + 30.0) % 360.0; // Change color on bounce
@@ -58,6 +63,7 @@ impl Ball {
 
             //Normals, balls supposed to be outside(true)
             if collider.normal && dist < self.radius + collider.radius {
+                trace!("Ball hit collider");
                 // Simple elastic collision response
                 self.radius += 2.0;
                 let overlap = self.radius + collider.radius - dist;
@@ -72,6 +78,7 @@ impl Ball {
             }
             //Non-normals, ball is supposed to be inside(false)
             else if !collider.normal && dist > collider.radius - self.radius {
+                trace!("Ball hit collider");
                 // Simple elastic collision response
 
                 self.radius += 2.0; // Grow the ball when it hits a non-normal collider
