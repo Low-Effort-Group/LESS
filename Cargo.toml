@@ -12,7 +12,6 @@ repository = "https://github.com/Low-Effort-Group/LESS"
 [dependencies]
 chrono = "0.4.44"
 clap = { version = "4.6.1", features = ["derive"] }
-google-youtube3 = "7.0.0"
 hsl = "0.1.1"
 image = { version = "0.25.10", default-features = false }
 log = "0.4.29"
