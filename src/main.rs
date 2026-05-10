@@ -1,6 +1,7 @@
 mod video;
 mod types;
 mod simulation;
+mod audio;
 
 use log::*;
 use clap::Parser;

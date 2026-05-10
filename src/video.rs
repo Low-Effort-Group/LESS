@@ -33,12 +33,13 @@ pub fn start(args: Args) {
 
     //setup simulation
     let (mut balls, mut colliders) = crate::simulation::setupSimulation();
+    let mut sound = crate::audio::Audio::init_audio();
 
     let mut time = std::time::Instant::now();
     for frame_num in 0..total_frames {
         let frame_start = std::time::Instant::now();
         // This draws the ball (ball.rs)
-        let img = simulation::newFrame(&mut balls, &mut colliders);
+        let mut img = simulation::newFrame(&mut balls, &mut colliders, &frame_num, &mut sound);
         
         encoder.write_frame(&img);
         
@@ -53,6 +54,7 @@ pub fn start(args: Args) {
     }
 
     encoder.finish();
+    sound.finish_audio(total_frames as usize);
     info!("{} Frames recorded in {} seconds", total_frames, timer.elapsed().as_secs_f32());
     info!("Video saved to {}.", filename);
 }
