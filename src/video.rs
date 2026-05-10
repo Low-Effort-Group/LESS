@@ -8,23 +8,22 @@ use log::*;
 use std::fs::create_dir_all;
 use chrono::Local;
 
+use crate::Args;
+
 pub const WIDTH: u32 = 1080;
 pub const HEIGHT: u32 = 1920;
-pub const FPS: u32 = 60;
 
-pub fn setup_encoder() {
+pub fn start(args: Args) {
     //start timer
     let timer = std::time::Instant::now();
-
-    let duration_secs = 20;
     
     create_dir_all("output").expect("Failed to create output directory");
     let time = Local::now();
-    let time = time.format("%Y-%m-%d_%H-%M-%S").to_string();
+    let filename = format!("slop_{}.mp4", time.format("%Y-%m-%d_%H-%M-%S").to_string());
     let mut encoder =
-        VideoEncoder::new(WIDTH, HEIGHT, FPS, format!("output/slop_{}.mp4", time).as_str()).unwrap();
+        VideoEncoder::new(WIDTH, HEIGHT, args.fps, format!("output/{}", filename).as_str()).unwrap();
 
-    let total_frames = FPS * duration_secs;
+    let total_frames = args.fps * args.duration;
 
     info!("Recording {} frames at {}x{}", total_frames, WIDTH, HEIGHT);
 
@@ -44,7 +43,7 @@ pub fn setup_encoder() {
         
         encoder.write_frame(&img);
         
-        if frame_num % 50 == 0 {
+        if frame_num % args.fps == 0 {
             info!("Frame {}/{}, in {} seconds", frame_num, total_frames, time.elapsed().as_secs_f32());
             time = std::time::Instant::now();
         } else {
@@ -56,5 +55,5 @@ pub fn setup_encoder() {
 
     encoder.finish();
     info!("{} Frames recorded in {} seconds", total_frames, timer.elapsed().as_secs_f32());
-    info!("Video saved to output.mp4.");
+    info!("Video saved to {}.", filename);
 }
