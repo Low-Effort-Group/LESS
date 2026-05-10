@@ -18,3 +18,4 @@ target
 
 # Output video
 output.mp4
+output/

@@ -5,6 +5,8 @@ use crate::types::ball::Ball;
 use crate::simulation;
 
 use log::*;
+use std::fs::create_dir_all;
+use chrono::Local;
 
 pub const WIDTH: u32 = 1080;
 pub const HEIGHT: u32 = 1920;
@@ -15,9 +17,12 @@ pub fn setup_encoder() {
     let timer = std::time::Instant::now();
 
     let duration_secs = 20;
-
+    
+    create_dir_all("output").expect("Failed to create output directory");
+    let time = Local::now();
+    let time = time.format("%Y-%m-%d_%H-%M-%S").to_string();
     let mut encoder =
-        VideoEncoder::new(WIDTH, HEIGHT, FPS, "output.mp4").expect("Failed to start ffmpeg");
+        VideoEncoder::new(WIDTH, HEIGHT, FPS, format!("output/slop_{}.mp4", time).as_str()).unwrap();
 
     let total_frames = FPS * duration_secs;
 

@@ -10,6 +10,7 @@ license = "GPLv3"
 repository = "https://github.com/Low-Effort-Group/LESS"
 
 [dependencies]
+chrono = "0.4.44"
 google-youtube3 = "7.0.0"
 hsl = "0.1.1"
 image = { version = "0.25.10", default-features = false }
