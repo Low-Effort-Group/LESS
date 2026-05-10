@@ -52,19 +52,19 @@ impl VideoEncoder {
     pub fn finish(mut self, output_path: &str) {
         drop(self.stdin);
         let _ = self.process.wait();
-        // ffmpeg -i input_video.mp4 -i input_audio.mp3 -c:v copy -c:a aac output.mp4
+        // ffmpeg -i output.mp4 -i output.wav -c:v copy -c:a aac test.mp4
         let mut process = Command::new("ffmpeg").args([
-            "-i",
-            "output.mp4",
-            "-i",
-            "audio.wav",
-            "-c:v",
-            "copy",
-            "-c:a",
-            "aac",
-            "-y",
-            output_path,
-        ]).stdin(Stdio::null()).stdout(Stdio::null()).stderr(Stdio::null()).spawn().ok();
+"-i",
+"output.mp4",
+"-i",
+"output.wav",
+"-c:v",
+"copy",
+"-c:a",
+"aac",
+"-y",
+output_path,
+        ]).stdin(Stdio::null()).stdout(std::process::Stdio::inherit()).stderr(std::process::Stdio::inherit()).spawn().ok();
         let _ = process.unwrap().wait();
 
         trace!("Video encoder finished successfully.");

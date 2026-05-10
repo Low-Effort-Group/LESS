@@ -55,8 +55,8 @@ pub fn start(args: Args) {
         }
     }
 
-    encoder.finish(&filename);
     sound.finish_audio(total_frames as usize);
+    encoder.finish(&filename);
     info!("{} Frames recorded in {} seconds", total_frames, timer.elapsed().as_secs_f32());
     info!("Video saved to {}.", filename);
 }
