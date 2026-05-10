@@ -1,3 +1,5 @@
+use log::*;
+
 use image::{ImageBuffer, Rgba};
 use std::io::Write;
 use std::process::{Child, Command, Stdio};
@@ -50,5 +52,6 @@ impl VideoEncoder {
     pub fn finish(mut self) {
         drop(self.stdin);
         let _ = self.process.wait();
+        trace!("Video encoder finished successfully.");
     }
 }
