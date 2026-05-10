@@ -1,6 +1,7 @@
 mod video;
 mod types;
 mod simulation;
+mod audio;
 
 use pretty_env_logger::*;
 use log::*;

@@ -4,6 +4,7 @@ use crate::types::ball::Ball;
 use crate::types::objects::Circle;
 use hsl::HSL;
 
+use crate::audio::Audio;
 
 pub fn setupSimulation() -> (Vec<Ball>, Vec<Circle>) {
     let mut ball1 = Ball {
@@ -44,7 +45,7 @@ pub fn setupSimulation() -> (Vec<Ball>, Vec<Circle>) {
     (balls, colliders)
 }
 
-pub fn newFrame(balls: &mut Vec<Ball>, mut colliders: &mut Vec<Circle>) -> RgbaImage {
+pub fn newFrame(balls: &mut Vec<Ball>, mut colliders: &mut Vec<Circle>, frame: &u32, mut sound: &mut Audio) -> RgbaImage {
     let mut img = RgbaImage::new(WIDTH, HEIGHT);
 
     //draw colliders
@@ -55,7 +56,10 @@ pub fn newFrame(balls: &mut Vec<Ball>, mut colliders: &mut Vec<Circle>) -> RgbaI
 
     //draw balls
     balls.iter_mut().for_each(|ball| {
-        ball.update(1.0 / 60.0, &mut colliders);
+        ball.update(1.0 / 60.0, 
+            &mut colliders,
+            &frame,
+            &mut sound);
         ball.draw(&mut img);
     });//move ball to the inside of the collider
     img
