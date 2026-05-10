@@ -26,8 +26,17 @@ pub fn setupSimulation() -> (Vec<Ball>, Vec<Circle>) {
             color: HSL { h: 120.0, s: 1.0, l: 0.5 },
             normal: false
         };
+    let mut circle2 = Circle {
+            x: WIDTH as f32 / 2.0,
+            y: HEIGHT as f32 / 2.0,
+            radius: 75.0,
+            thickness: 5.0,
+            color: HSL { h: 120.0, s: 1.0, l: 0.5 },
+            normal: true
+        };
     let colliders = vec![
-        circle
+        circle,
+        circle2
     ];
 
     let dt = 1.0 / 60.0; // simulate at 60 FPS
