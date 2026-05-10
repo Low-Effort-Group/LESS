@@ -27,12 +27,12 @@ pub fn setup_encoder() {
     // println!("simulation descripticon: {}", content.description);
 
     //setup simulation
-    let mut balls = crate::simulation::setupSimulation();
+    let (mut balls, mut colliders) = crate::simulation::setupSimulation();
 
     for frame_num in 0..total_frames {
         let frame_start = std::time::Instant::now();
         // This draws the ball (ball.rs)
-        let mut img = simulation::newFrame(&mut balls);
+        let mut img = simulation::newFrame(&mut balls, &mut colliders);
         
         encoder.write_frame(&img);
 

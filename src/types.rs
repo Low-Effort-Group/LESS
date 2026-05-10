@@ -1,5 +1,6 @@
 pub mod ball;
 pub mod cube;
+pub mod objects;
 
 use image::RgbaImage;
 
