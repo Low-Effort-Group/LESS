@@ -1,7 +1,6 @@
 mod encoder;
 pub mod graphics;
 use crate::video::encoder::*;
-use crate::types::ball::Ball;
 use crate::simulation;
 
 use log::*;
@@ -19,7 +18,7 @@ pub fn start(args: Args) {
     
     create_dir_all("output").expect("Failed to create output directory");
     let time = Local::now();
-    let filename = format!("slop_{}.mp4", time.format("%Y-%m-%d_%H-%M-%S").to_string());
+    let filename = format!("slop_{}.mp4", time.format("%Y-%m-%d_%H-%M-%S"));
     let mut encoder =
         VideoEncoder::new(WIDTH, HEIGHT, args.fps, format!("output/{}", filename).as_str()).unwrap();
 

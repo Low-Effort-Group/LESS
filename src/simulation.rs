@@ -7,7 +7,7 @@ use hsl::HSL;
 use crate::audio::Audio;
 
 pub fn setupSimulation() -> (Vec<Ball>, Vec<Circle>) {
-    let mut ball1 = Ball {
+    let ball1 = Ball {
         x: WIDTH as f32 / 2.0 + 100.0,
         y: HEIGHT as f32 / 2.0,
         vx: 200.0, // pixels per second
@@ -19,7 +19,7 @@ pub fn setupSimulation() -> (Vec<Ball>, Vec<Circle>) {
         color: HSL { h: 240.0, s: 1.0, l: 0.5 },
     };
 
-    let mut circle = Circle {
+    let circle = Circle {
             x: WIDTH as f32 / 2.0,
             y: HEIGHT as f32 / 2.0,
             radius: 300.0,
@@ -27,7 +27,7 @@ pub fn setupSimulation() -> (Vec<Ball>, Vec<Circle>) {
             color: HSL { h: 120.0, s: 1.0, l: 0.5 },
             normal: false
         };
-    let mut circle2 = Circle {
+    let circle2 = Circle {
             x: WIDTH as f32 / 2.0,
             y: HEIGHT as f32 / 2.0,
             radius: 75.0,
