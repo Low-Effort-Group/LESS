@@ -1,7 +1,6 @@
 mod encoder;
 pub mod graphics;
 use crate::video::encoder::*;
-use crate::types::ball::Ball;
 use crate::simulation;
 
 use log::*;
@@ -19,7 +18,7 @@ pub fn start(args: Args) {
     
     create_dir_all("output").expect("Failed to create output directory");
     let time = Local::now();
-    let filename = format!("slop_{}.mp4", time.format("%Y-%m-%d_%H-%M-%S").to_string());
+    let filename = format!("slop_{}.mp4", time.format("%Y-%m-%d_%H-%M-%S"));
     let mut encoder =
         VideoEncoder::new(WIDTH, HEIGHT, args.fps, format!("output/{}", filename).as_str()).unwrap();
 
@@ -39,7 +38,7 @@ pub fn start(args: Args) {
     for frame_num in 0..total_frames {
         let frame_start = std::time::Instant::now();
         // This draws the ball (ball.rs)
-        let mut img = simulation::newFrame(&mut balls, &mut colliders);
+        let img = simulation::newFrame(&mut balls, &mut colliders);
         
         encoder.write_frame(&img);
         

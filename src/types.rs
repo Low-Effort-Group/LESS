@@ -2,8 +2,6 @@ pub mod ball;
 pub mod cube;
 pub mod objects;
 
-use image::RgbaImage;
-
 // /// This struct defines the type of content, and describes its properties. Example: A ball bouncing physics simulation
 // #[derive(Debug, Copy,Clone)]
 // pub struct ContentType {

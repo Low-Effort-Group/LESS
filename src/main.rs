@@ -2,7 +2,6 @@ mod video;
 mod types;
 mod simulation;
 
-use pretty_env_logger::*;
 use log::*;
 use clap::Parser;
 
