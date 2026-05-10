@@ -20,4 +20,4 @@ target
 output.mp4
 output/
 
-audio-test/*
+output.wav
