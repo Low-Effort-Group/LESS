@@ -18,9 +18,11 @@ pub fn start(args: Args) {
     
     create_dir_all("output").expect("Failed to create output directory");
     let time = Local::now();
-    let filename = format!("slop_{}.mp4", time.format("%Y-%m-%d_%H-%M-%S"));
+    let time = time.format("%Y-%m-%d_%H-%M-%S");
+    let filename = format!("output/slop_{time}.mp4");
+
     let mut encoder =
-        VideoEncoder::new(WIDTH, HEIGHT, args.fps, format!("output/{}", filename).as_str()).unwrap();
+        VideoEncoder::new(WIDTH, HEIGHT, args.fps).unwrap();
 
     let total_frames = args.fps * args.duration;
 
@@ -52,7 +54,7 @@ pub fn start(args: Args) {
         }
     }
 
-    encoder.finish();
+    encoder.finish(&filename);
     info!("{} Frames recorded in {} seconds", total_frames, timer.elapsed().as_secs_f32());
     info!("Video saved to {}.", filename);
 }
