@@ -10,7 +10,7 @@ pub struct VideoEncoder {
 }
 
 impl VideoEncoder {
-    pub fn new(width: u32, height: u32, fps: u32, output_path: &str) -> Option<Self> {
+    pub fn new(width: u32, height: u32, fps: u32) -> Option<Self> {
         let mut process = Command::new("ffmpeg")
             .args([
                 "-f",
@@ -32,7 +32,7 @@ impl VideoEncoder {
                 "-preset",
                 "ultrafast",
                 "-y",
-                output_path,
+                "output.mp4",
             ])
             .stdin(Stdio::piped())
             .stdout(Stdio::null())
@@ -49,9 +49,24 @@ impl VideoEncoder {
         let _ = self.stdin.flush();
     }
 
-    pub fn finish(mut self) {
+    pub fn finish(mut self, output_path: &str) {
         drop(self.stdin);
         let _ = self.process.wait();
+        // ffmpeg -i input_video.mp4 -i input_audio.mp3 -c:v copy -c:a aac output.mp4
+        let mut process = Command::new("ffmpeg").args([
+            "-i",
+            "output.mp4",
+            "-i",
+            "audio.wav",
+            "-c:v",
+            "copy",
+            "-c:a",
+            "aac",
+            "-y",
+            output_path,
+        ]).stdin(Stdio::null()).stdout(Stdio::null()).stderr(Stdio::null()).spawn().ok();
+        let _ = process.unwrap().wait();
+
         trace!("Video encoder finished successfully.");
     }
 }
