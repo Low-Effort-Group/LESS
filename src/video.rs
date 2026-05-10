@@ -4,6 +4,8 @@ use crate::video::encoder::*;
 use crate::types::ball::Ball;
 use crate::simulation;
 
+use log::*;
+
 pub const WIDTH: u32 = 1080;
 pub const HEIGHT: u32 = 1920;
 pub const FPS: u32 = 60;
@@ -19,7 +21,7 @@ pub fn setup_encoder() {
 
     let total_frames = FPS * duration_secs;
 
-    println!("Recording {} frames at {}x{}", total_frames, WIDTH, HEIGHT);
+    info!("Recording {} frames at {}x{}", total_frames, WIDTH, HEIGHT);
 
     // let content: ContentType = TYPES[0];
 
@@ -29,20 +31,25 @@ pub fn setup_encoder() {
     //setup simulation
     let (mut balls, mut colliders) = crate::simulation::setupSimulation();
 
+    let mut time = std::time::Instant::now();
     for frame_num in 0..total_frames {
         let frame_start = std::time::Instant::now();
         // This draws the ball (ball.rs)
         let mut img = simulation::newFrame(&mut balls, &mut colliders);
         
         encoder.write_frame(&img);
-
-        //print wich frame is done and frame time
-        let time = frame_start.elapsed().as_secs_f32();
-        println!("Frame {}/{}, in {} seconds", frame_num, total_frames, time);
         
+        if frame_num % 50 == 0 {
+            info!("Frame {}/{}, in {} seconds", frame_num, total_frames, time.elapsed().as_secs_f32());
+            time = std::time::Instant::now();
+        } else {
+            //print which frame is done and frame time
+            let time = frame_start.elapsed().as_secs_f32();
+            trace!("Frame {}/{}, in {} seconds", frame_num, total_frames, time);        
+        }
     }
 
     encoder.finish();
-    println!("Encoding finished in {} seconds", timer.elapsed().as_secs_f32());
-    println!("Video saved to output.mp4.");
+    info!("{} Frames recorded in {} seconds", total_frames, timer.elapsed().as_secs_f32());
+    info!("Video saved to output.mp4.");
 }

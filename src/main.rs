@@ -9,6 +9,5 @@ use log::*;
 
 fn main() {
     startup();
-    info!("Starting simulation...");
     crate::video::setup_encoder();
 }
