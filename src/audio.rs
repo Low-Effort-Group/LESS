@@ -41,7 +41,7 @@ impl Audio {
         }
 
         for (i, sample) in processed_samples.into_iter().enumerate() {
-            self.samples_vector[sample_number + i] = sample;
+            self.samples_vector[sample_number + i] += sample;
         }
     }
 
