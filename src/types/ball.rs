@@ -1,14 +1,16 @@
-use hsl::HSL;
+use crate::config::Config;
+use crate::types::objects::Circle;
 use crate::video::graphics::*;
+use crate::audio::Audio;
+use crate::types::HSL;
+use crate::config::Args;
+use crate::CONFIG;
+
+use serde::{Serialize, Deserialize};
 use image::{RgbaImage};
-use rand::Rng;
 use log::*;
 
-use crate::video::{HEIGHT, WIDTH};
-use crate::types::objects::Circle;
-use crate::audio::Audio;
-
-#[derive(Clone)]
+#[derive(Clone, Serialize, Deserialize)]
 pub struct Ball {
     pub x: f32,
     pub y: f32,
@@ -37,9 +39,9 @@ impl Ball {
             self.vx = -self.vx * self.friction;
             self.color.h = (self.color.h + 30.0) % 360.0; // Change color on bounce
             sound.add_sound(*frame as usize,"./audio/bamG.wav", 1.0); // Add sound on bounce
-        } else if self.x + self.radius > WIDTH as f32 {
+        } else if self.x + self.radius > CONFIG.width as f32 {
             trace!("Ball hit right wall");
-            self.x = WIDTH as f32 - self.radius;
+            self.x = CONFIG.width as f32 - self.radius;
             self.vx = -self.vx * self.friction;
             self.color.h = (self.color.h + 30.0) % 360.0; // Change color on bounce
             sound.add_sound(*frame as usize,"./audio/bamG.wav", 1.0); // Add sound on bounce
@@ -52,9 +54,9 @@ impl Ball {
             self.vy = -self.vy * self.restitution;
             self.color.h = (self.color.h + 30.0) % 360.0; // Change color on bounce
             sound.add_sound(*frame as usize,"./audio/bamG.wav", 1.0); // Add sound on bounce
-        } else if self.y + self.radius > HEIGHT as f32 {
+        } else if self.y + self.radius > CONFIG.height as f32 {
             trace!("Ball hit ceiling");
-            self.y = HEIGHT as f32 - self.radius;
+            self.y = CONFIG.height as f32 - self.radius;
             self.vy = -self.vy * self.restitution;
             self.color.h = (self.color.h + 30.0) % 360.0; // Change color on bounce
             sound.add_sound(*frame as usize,"./audio/bamG.wav", 1.0); // Add sound on bounce
