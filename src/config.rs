@@ -2,13 +2,12 @@ use serde::{Deserialize, Serialize};
 use serde_json::Result;
 use clap::Parser;
 use crate::types::ball::Ball;
-use hsl::HSL;
+use crate::types::HSL;
 
 const WIDTH: u32 = 1080;
 const HEIGHT: u32 = 1920;
 const FPS: u32 = 60;
 const DURATION: u32 = 20;
-
 
 #[derive(Serialize, Deserialize)]
 pub struct Config {
@@ -20,19 +19,32 @@ pub struct Config {
     pub fps: u32,
     #[serde(default)]
     pub duration: u32,
-    #[serde(default)]
-    pub balls: &'static [Ball],
+    #[serde(default = "default_balls")]
+    pub balls: Vec<Ball>,
+}
+
+fn default_balls() -> Vec<Ball> {
+    vec![BALL]
+}
+
+fn create_json(filename: &str, config: Config) -> Result<()> {
+    let data = serde_json::to_string_pretty(&config)?;
+    std::fs::write(filename, data).unwrap();
+    Ok(())
 }
 
 impl Config {
-    pub fn read(filename: &str) -> Result<Config, Box<dyn std::error::Error>> {
+    pub fn read(filename: &str) -> Result<Config> {
+        if !std::path::Path::new(filename).exists() {
+            create_json(filename, Config::default())?;
+        }
+
         let data = std::fs::read_to_string(filename).unwrap();
         let mut c: Config = serde_json::from_str(&data)?;
         if c.width == 0 { c.width = WIDTH; }
         if c.height == 0 { c.height = HEIGHT; }
         if c.fps == 0 { c.fps = FPS; }
         if c.duration == 0 { c.duration = DURATION; }
-        if c.balls.is_none() { c.balls = BALLS; }
         for i in 0..c.balls.len() {
             if c.balls[i].x == 0.0 { c.balls[i].x = BALL.x; }
             if c.balls[i].y == 0.0 { c.balls[i].y = BALL.y; }
@@ -63,6 +75,16 @@ impl Config {
         std::fs::write(filename, data).unwrap();
         Ok(())
     }
+
+    pub fn default() -> Config {
+        Config {
+            width: WIDTH,
+            height: HEIGHT,
+            fps: FPS,
+            duration: DURATION,
+            balls: vec![BALL],
+        }
+    }
 }
 
 #[derive(Parser, Debug)]
@@ -89,5 +111,3 @@ const BALL: Ball = Ball {
     friction: 0.8,
     color: HSL { h: 240.0, s: 1.0, l: 0.5 },
 };
-
-const BALLS: &[Ball] = &[BALL];

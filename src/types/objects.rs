@@ -1,4 +1,4 @@
-use hsl::HSL;
+use crate::types::HSL;
 
 pub struct Circle {
     pub x: f32,

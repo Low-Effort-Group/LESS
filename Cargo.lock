@@ -644,6 +644,7 @@ dependencies = [
  "hsl",
  "image",
  "log",
+ "once_cell",
  "pretty_env_logger",
  "rand",
  "serde",

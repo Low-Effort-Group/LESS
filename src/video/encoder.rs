@@ -57,14 +57,14 @@ impl VideoEncoder {
             "-i",
             "output.mp4",
             "-i",
-            "audio.wav",
+            "output.wav",
             "-c:v",
             "copy",
             "-c:a",
             "aac",
             "-y",
             output_path,
-        ]).stdin(Stdio::null()).stdout(Stdio::null()).stderr(Stdio::null()).spawn().ok();
+        ]).stdin(Stdio::null()).stdout(std::process::Stdio::inherit()).stderr(std::process::Stdio::inherit()).spawn().ok();
         let _ = process.unwrap().wait();
 
         trace!("Video encoder finished successfully.");

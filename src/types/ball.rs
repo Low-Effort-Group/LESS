@@ -2,8 +2,9 @@ use crate::config::Config;
 use crate::types::objects::Circle;
 use crate::video::graphics::*;
 use crate::audio::Audio;
-use crate::types::hsl::HSL;
+use crate::types::HSL;
 use crate::config::Args;
+use crate::CONFIG;
 
 use serde::{Serialize, Deserialize};
 use image::{RgbaImage};
@@ -23,7 +24,7 @@ pub struct Ball {
 }
 
 impl Ball {
-    pub fn update(&mut self, dt: f32, colliders: &mut Vec<Circle>, frame: &u32, sound: &mut Audio, config: &Config) {
+    pub fn update(&mut self, dt: f32, colliders: &mut Vec<Circle>, frame: &u32, sound: &mut Audio) {
         // Apply gravity
         self.vy += self.gravity * dt;
 
@@ -38,9 +39,9 @@ impl Ball {
             self.vx = -self.vx * self.friction;
             self.color.h = (self.color.h + 30.0) % 360.0; // Change color on bounce
             sound.add_sound(*frame as usize,"./audio/bamG.wav", 1.0); // Add sound on bounce
-        } else if self.x + self.radius > config.width as f32 {
+        } else if self.x + self.radius > CONFIG.width as f32 {
             trace!("Ball hit right wall");
-            self.x = config.width as f32 - self.radius;
+            self.x = CONFIG.width as f32 - self.radius;
             self.vx = -self.vx * self.friction;
             self.color.h = (self.color.h + 30.0) % 360.0; // Change color on bounce
             sound.add_sound(*frame as usize,"./audio/bamG.wav", 1.0); // Add sound on bounce
@@ -53,9 +54,9 @@ impl Ball {
             self.vy = -self.vy * self.restitution;
             self.color.h = (self.color.h + 30.0) % 360.0; // Change color on bounce
             sound.add_sound(*frame as usize,"./audio/bamG.wav", 1.0); // Add sound on bounce
-        } else if self.y + self.radius > config.height as f32 {
+        } else if self.y + self.radius > CONFIG.height as f32 {
             trace!("Ball hit ceiling");
-            self.y = config.height as f32 - self.radius;
+            self.y = CONFIG.height as f32 - self.radius;
             self.vy = -self.vy * self.restitution;
             self.color.h = (self.color.h + 30.0) % 360.0; // Change color on bounce
             sound.add_sound(*frame as usize,"./audio/bamG.wav", 1.0); // Add sound on bounce

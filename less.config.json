@@ -1,0 +1,23 @@
+{
+  "width": 1080,
+  "height": 1920,
+  "fps": 60,
+  "duration": 20,
+  "balls": [
+    {
+      "x": 640.0,
+      "y": 960.0,
+      "vx": 200.0,
+      "vy": 150.0,
+      "radius": 30.0,
+      "gravity": 1000.0,
+      "restitution": 1.05,
+      "friction": 0.8,
+      "color": {
+        "h": 240.0,
+        "s": 1.0,
+        "l": 0.5
+      }
+    }
+  ]
+}

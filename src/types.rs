@@ -5,7 +5,7 @@ pub mod objects;
 use hsl::HSL as NoSerdeHSL;
 use serde::{Serialize, Deserialize};
 
-#[derive(Serialize, Deserialize)]
+#[derive(Clone, Serialize, Deserialize)]
 pub struct HSL {
     pub h: f64,
     pub s: f64,
