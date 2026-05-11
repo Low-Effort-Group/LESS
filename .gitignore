@@ -16,7 +16,7 @@ target
 # Added by cargo
 /target
 
-# Output video
+# Output files
 output.mp4
 output/
 
