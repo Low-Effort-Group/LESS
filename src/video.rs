@@ -2,17 +2,15 @@ mod encoder;
 pub mod graphics;
 use crate::video::encoder::*;
 use crate::simulation;
+use crate::config::Config;
 
 use log::*;
 use std::fs::create_dir_all;
 use chrono::Local;
 
-use crate::Args;
+pub fn start() {
+    let config = Config::read_args("config.toml").unwrap();
 
-pub const WIDTH: u32 = 1080;
-pub const HEIGHT: u32 = 1920;
-
-pub fn start(args: Args) {
     //start timer
     let timer = std::time::Instant::now();
     
@@ -22,11 +20,11 @@ pub fn start(args: Args) {
     let filename = format!("output/slop_{time}.mp4");
 
     let mut encoder =
-        VideoEncoder::new(WIDTH, HEIGHT, args.fps).unwrap();
+        VideoEncoder::new(config.width, config.height, args.fps).unwrap();
 
     let total_frames = args.fps * args.duration;
 
-    info!("Recording {} frames at {}x{}", total_frames, WIDTH, HEIGHT);
+    info!("Recording {} frames at {}x{}", total_frames, config.width, config.height);
 
     // let content: ContentType = TYPES[0];
 
@@ -41,7 +39,7 @@ pub fn start(args: Args) {
     for frame_num in 0..total_frames {
         let frame_start = std::time::Instant::now();
         // This draws the ball (ball.rs)
-        let mut img = simulation::newFrame(&mut balls, &mut colliders, &frame_num, &mut sound);
+        let mut img = simulation::newFrame(&mut balls, &mut colliders, &frame_num, &mut sound, &config);
         
         encoder.write_frame(&img);
         

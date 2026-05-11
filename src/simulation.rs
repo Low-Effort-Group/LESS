@@ -1,35 +1,35 @@
-use crate::video::{HEIGHT, WIDTH};
 use image::RgbaImage;
 use crate::types::ball::Ball;
 use crate::types::objects::Circle;
+use crate::config::Config;
 use hsl::HSL;
 
 use crate::audio::Audio;
 
 pub fn setupSimulation() -> (Vec<Ball>, Vec<Circle>) {
     let ball1 = Ball {
-        x: WIDTH as f32 / 2.0 + 100.0,
-        y: HEIGHT as f32 / 2.0,
+        x: config.width as f32 / 2.0 + 100.0,
+        y: config.height as f32 / 2.0,
         vx: 200.0, // pixels per second
         vy: 150.0, // pixels per second
         radius: 30.0,
         gravity: 0.0, // pixels per second squared
-        restitution: 1.05, // bounciness self.x = WIDTH as f32 - self.radius;
+        restitution: 1.05, // bounciness self.x = config.width as f32 - self.radius;
         friction: 0.8, // friction on bounce
         color: HSL { h: 240.0, s: 1.0, l: 0.5 },
     };
 
     let circle = Circle {
-            x: WIDTH as f32 / 2.0,
-            y: HEIGHT as f32 / 2.0,
+            x: config.width as f32 / 2.0,
+            y: config.height as f32 / 2.0,
             radius: 300.0,
             thickness: 50.0,
             color: HSL { h: 120.0, s: 1.0, l: 0.5 },
             normal: false
         };
     let circle2 = Circle {
-            x: WIDTH as f32 / 2.0,
-            y: HEIGHT as f32 / 2.0,
+            x: config.width as f32 / 2.0,
+            y: config.height as f32 / 2.0,
             radius: 75.0,
             thickness: 5.0,
             color: HSL { h: 120.0, s: 1.0, l: 0.5 },
@@ -45,8 +45,8 @@ pub fn setupSimulation() -> (Vec<Ball>, Vec<Circle>) {
     (balls, colliders)
 }
 
-pub fn newFrame(balls: &mut Vec<Ball>, mut colliders: &mut Vec<Circle>, frame: &u32, mut sound: &mut Audio) -> RgbaImage {
-    let mut img = RgbaImage::new(WIDTH, HEIGHT);
+pub fn newFrame(balls: &mut Vec<Ball>, mut colliders: &mut Vec<Circle>, frame: &u32, mut sound: &mut Audio, config: &Config) -> RgbaImage {
+    let mut img = RgbaImage::new(config.width, config.height);
 
     //draw colliders
     colliders.iter_mut().for_each(|collider| {
@@ -59,7 +59,7 @@ pub fn newFrame(balls: &mut Vec<Ball>, mut colliders: &mut Vec<Circle>, frame: &
         ball.update(1.0 / 60.0, 
             &mut colliders,
             &frame,
-            &mut sound);
+            &mut sound, config);
         ball.draw(&mut img);
     });//move ball to the inside of the collider
     img

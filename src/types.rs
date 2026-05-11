@@ -2,6 +2,22 @@ pub mod ball;
 pub mod cube;
 pub mod objects;
 
+use hsl::HSL as NoSerdeHSL;
+use serde::{Serialize, Deserialize};
+
+#[derive(Serialize, Deserialize)]
+pub struct HSL {
+    pub h: f64,
+    pub s: f64,
+    pub l: f64,
+}
+
+impl HSL {
+    pub fn to_rgb(&self) -> (u8, u8, u8) {
+        NoSerdeHSL { h: self.h, s: self.s, l: self.l }.to_rgb()
+    }
+}
+
 // /// This struct defines the type of content, and describes its properties. Example: A ball bouncing physics simulation
 // #[derive(Debug, Copy,Clone)]
 // pub struct ContentType {
