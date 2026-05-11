@@ -53,7 +53,7 @@ impl VideoEncoder {
         drop(self.stdin);
         let _ = self.process.wait();
         // ffmpeg -i input_video.mp4 -i input_audio.mp3 -c:v copy -c:a aac output.mp4
-        let mut process = Command::new("ffmpeg").args([
+        let process = Command::new("ffmpeg").args([
             "-i",
             "output.mp4",
             "-i",
