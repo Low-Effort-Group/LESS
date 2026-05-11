@@ -32,7 +32,7 @@ impl Audio {
             analysis.push_sample(sample, &mut alternating_hann);
         }
 
-        let mut synthesis = TdpsolaSynthesis::new(Speed::from_f32(pitch_shift), source_wavelength);
+        let mut synthesis = TdpsolaSynthesis::new(Speed::from_f32(pitch_shift + 1.0), source_wavelength);
         let processed_samples: Vec<f32> = synthesis.iter(&analysis).collect();
 
         let required_len = sample_number + processed_samples.len();
@@ -41,7 +41,7 @@ impl Audio {
         }
 
         for (i, sample) in processed_samples.into_iter().enumerate() {
-            self.samples_vector[sample_number + i] = sample;
+            self.samples_vector[sample_number + i] += sample;
         }
     }
 
