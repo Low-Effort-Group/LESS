@@ -1,9 +1,7 @@
-use crate::config::Config;
 use crate::types::objects::Circle;
 use crate::video::graphics::*;
 use crate::audio::Audio;
 use crate::types::HSL;
-use crate::config::Args;
 use crate::CONFIG;
 
 use serde::{Serialize, Deserialize};

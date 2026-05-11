@@ -1,13 +1,12 @@
 use image::RgbaImage;
 use crate::types::ball::Ball;
 use crate::types::objects::Circle;
-use crate::config::Config;
 use crate::CONFIG;
 use crate::types::HSL;
 
 use crate::audio::Audio;
 
-pub fn setupSimulation() -> (Vec<Ball>, Vec<Circle>) {
+pub fn setup_simulation() -> (Vec<Ball>, Vec<Circle>) {
     let ball1 = Ball {
         x: CONFIG.width as f32 / 2.0 + 100.0,
         y: CONFIG.height as f32 / 2.0,
@@ -41,12 +40,11 @@ pub fn setupSimulation() -> (Vec<Ball>, Vec<Circle>) {
         circle2
     ];
 
-    let dt = 1.0 / 60.0; // simulate at 60 FPS
     let balls = vec![ball1];
     (balls, colliders)
 }
 
-pub fn newFrame(balls: &mut Vec<Ball>, mut colliders: &mut Vec<Circle>, frame: &u32, mut sound: &mut Audio) -> RgbaImage {
+pub fn new_frame(balls: &mut Vec<Ball>, mut colliders: &mut Vec<Circle>, frame: &u32, mut sound: &mut Audio) -> RgbaImage {
     let mut img = RgbaImage::new(CONFIG.width, CONFIG.height);
 
     //draw colliders

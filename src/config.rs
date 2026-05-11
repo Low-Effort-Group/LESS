@@ -70,11 +70,11 @@ impl Config {
         Ok(config)
     }
 
-    pub fn to_file(&self, filename: &str) -> Result<()> {
-        let data = serde_json::to_string_pretty(self)?;
-        std::fs::write(filename, data).unwrap();
-        Ok(())
-    }
+    // pub fn to_file(&self, filename: &str) -> Result<()> {
+    //     let data = serde_json::to_string_pretty(self)?;
+    //     std::fs::write(filename, data).unwrap();
+    //     Ok(())
+    // }
 
     pub fn default() -> Config {
         Config {
