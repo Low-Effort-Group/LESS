@@ -1,7 +1,6 @@
 use hsl::HSL;
 use crate::video::graphics::*;
 use image::{RgbaImage};
-use rand::Rng;
 use log::*;
 
 use crate::video::{HEIGHT, WIDTH};
