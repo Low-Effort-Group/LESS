@@ -30,7 +30,9 @@ pub fn start() {
     // println!("simulation descripticon: {}", content.description);
 
     //setup simulation
-    let (mut balls, mut colliders) = crate::simulation::setup_simulation();
+    // let (mut balls, mut colliders) = crate::simulation::setupSimulation();
+    let mut balls = CONFIG.balls.clone();
+    let mut colliders = crate::simulation::setup_simulation();
     let mut sound = crate::audio::Audio::init_audio();
 
     let mut time = std::time::Instant::now();

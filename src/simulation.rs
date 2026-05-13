@@ -6,7 +6,7 @@ use crate::types::HSL;
 
 use crate::audio::Audio;
 
-pub fn setup_simulation() -> (Vec<Ball>, Vec<Circle>) {
+pub fn setup_simulation() -> Vec<Circle> {
     let ball1 = Ball {
         x: CONFIG.width as f32 / 2.0 + 100.0,
         y: CONFIG.height as f32 / 2.0,
@@ -40,8 +40,9 @@ pub fn setup_simulation() -> (Vec<Ball>, Vec<Circle>) {
         circle2
     ];
 
-    let balls = vec![ball1];
-    (balls, colliders)
+    colliders
+    // let balls = vec![ball1];
+    // (balls, colliders)
 }
 
 pub fn new_frame(balls: &mut Vec<Ball>, mut colliders: &mut Vec<Circle>, frame: &u32, mut sound: &mut Audio) -> RgbaImage {
