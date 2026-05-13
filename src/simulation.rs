@@ -1,13 +1,24 @@
 use image::RgbaImage;
 use crate::types::ball::Ball;
 use crate::types::objects::Circle;
-use crate::config::Config;
 use crate::CONFIG;
 use crate::types::HSL;
 
 use crate::audio::Audio;
 
-pub fn setupSimulation() -> Vec<Circle> {//(Vec<Ball>, Vec<Circle>) {
+pub fn setup_simulation() -> Vec<Circle> {
+    let ball1 = Ball {
+        x: CONFIG.width as f32 / 2.0 + 100.0,
+        y: CONFIG.height as f32 / 2.0,
+        vx: 200.0, // pixels per second
+        vy: 150.0, // pixels per second
+        radius: 30.0,
+        gravity: 0.0, // pixels per second squared
+        restitution: 1.05, // bounciness self.x = CONFIG.width as f32 - self.radius;
+        friction: 0.8, // friction on bounce
+        color: HSL { h: 240.0, s: 1.0, l: 0.5 },
+    };
+
     let circle = Circle {
             x: CONFIG.width as f32 / 2.0,
             y: CONFIG.height as f32 / 2.0,
@@ -34,7 +45,7 @@ pub fn setupSimulation() -> Vec<Circle> {//(Vec<Ball>, Vec<Circle>) {
     // (balls, colliders)
 }
 
-pub fn newFrame(balls: &mut Vec<Ball>, mut colliders: &mut Vec<Circle>, frame: &u32, mut sound: &mut Audio) -> RgbaImage {
+pub fn new_frame(balls: &mut Vec<Ball>, mut colliders: &mut Vec<Circle>, frame: &u32, mut sound: &mut Audio) -> RgbaImage {
     let mut img = RgbaImage::new(CONFIG.width, CONFIG.height);
 
     //draw colliders

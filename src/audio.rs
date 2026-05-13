@@ -4,7 +4,6 @@ use tdpsola::{TdpsolaAnalysis, TdpsolaSynthesis, AlternatingHann, Speed};
 pub struct Audio {
     spec: WavSpec,
     writer: WavWriter<std::io::BufWriter<std::fs::File>>,
-    samples_written: usize,
     samples_vector: Vec<f32>,
 }
 
@@ -17,7 +16,7 @@ impl Audio {
             sample_format: SampleFormat::Int,
         };
         let writer = WavWriter::create("output.wav", spec).unwrap();
-        Audio { spec, writer, samples_written: 0, samples_vector: Vec::new() }
+        Audio { spec, writer, samples_vector: Vec::new() }
     }
 
     pub fn add_sound(&mut self, frame: usize, filename: &str, pitch_shift: f32) {

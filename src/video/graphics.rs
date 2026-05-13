@@ -21,17 +21,17 @@ pub fn draw_circle(
     }
 }
 
-pub fn draw_rect(
-    img: &mut ImageBuffer<Rgba<u8>, Vec<u8>>,
-    x: u32,
-    y: u32,
-    w: u32,
-    h: u32,
-    color: Rgba<u8>,
-) {
-    for py in y..=(y + h).min(img.height() - 1) {
-        for px in x..=(x + w).min(img.width() - 1) {
-            img.put_pixel(px, py, color);
-        }
-    }
-}
+// pub fn draw_rect(
+//     img: &mut ImageBuffer<Rgba<u8>, Vec<u8>>,
+//     x: u32,
+//     y: u32,
+//     w: u32,
+//     h: u32,
+//     color: Rgba<u8>,
+// ) {
+//     for py in y..=(y + h).min(img.height() - 1) {
+//         for px in x..=(x + w).min(img.width() - 1) {
+//             img.put_pixel(px, py, color);
+//         }
+//     }
+// }

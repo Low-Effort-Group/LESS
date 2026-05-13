@@ -2,7 +2,6 @@ mod encoder;
 pub mod graphics;
 use crate::video::encoder::*;
 use crate::simulation;
-use crate::config::Config;
 use crate::CONFIG;
 
 use log::*;
@@ -33,14 +32,14 @@ pub fn start() {
     //setup simulation
     // let (mut balls, mut colliders) = crate::simulation::setupSimulation();
     let mut balls = CONFIG.balls.clone();
-    let mut colliders = crate::simulation::setupSimulation();
+    let mut colliders = crate::simulation::setup_simulation();
     let mut sound = crate::audio::Audio::init_audio();
 
     let mut time = std::time::Instant::now();
     for frame_num in 0..total_frames {
         let frame_start = std::time::Instant::now();
         // This draws the ball (ball.rs)
-        let img = simulation::newFrame(&mut balls, &mut colliders, &frame_num, &mut sound);
+        let img = simulation::new_frame(&mut balls, &mut colliders, &frame_num, &mut sound);
         
         encoder.write_frame(&img);
         
