@@ -22,7 +22,7 @@ pub struct Ball {
 }
 
 impl Ball {
-    pub fn update(&mut self, dt: f32, colliders: &mut Vec<Circle>, frame: &u32, sound: &mut Audio) {
+    pub fn update(&mut self, dt: f32, colliders: &mut Vec<Circle>, frame_num: usize, sound: &mut Audio, collisions: &mut usize) {
         // Apply gravity
         self.vy += self.gravity * dt;
 
@@ -30,36 +30,15 @@ impl Ball {
         self.x += self.vx * dt;
         self.y += self.vy * dt;
 
-        // Bounce off walls
-        if self.x - self.radius < 0.0 {
-            trace!("Ball hit left wall");
-            self.x = self.radius;
-            self.vx = -self.vx * self.friction;
-            self.color.h = (self.color.h + 30.0) % 360.0; // Change color on bounce
-            sound.add_sound(*frame as usize,"./audio/bamG.wav", 1.0); // Add sound on bounce
-        } else if self.x + self.radius > CONFIG.width as f32 {
-            trace!("Ball hit right wall");
-            self.x = CONFIG.width as f32 - self.radius;
-            self.vx = -self.vx * self.friction;
-            self.color.h = (self.color.h + 30.0) % 360.0; // Change color on bounce
-            sound.add_sound(*frame as usize,"./audio/bamG.wav", 1.0); // Add sound on bounce
+        if 
+        self.x - self.radius < 0.0 ||
+        self.x + self.radius > CONFIG.width as f32 ||
+        self.y - self.radius < 0.0 ||
+        self.y + self.radius > CONFIG.height as f32
+        {
+            self.bounce_wall(sound, collisions);
         }
-
-        // Bounce off floor and ceiling
-        if self.y - self.radius < 0.0 {
-            trace!("Ball hit floor");
-            self.y = self.radius;
-            self.vy = -self.vy * self.restitution;
-            self.color.h = (self.color.h + 30.0) % 360.0; // Change color on bounce
-            sound.add_sound(*frame as usize,"./audio/bamG.wav", 1.0); // Add sound on bounce
-        } else if self.y + self.radius > CONFIG.height as f32 {
-            trace!("Ball hit ceiling");
-            self.y = CONFIG.height as f32 - self.radius;
-            self.vy = -self.vy * self.restitution;
-            self.color.h = (self.color.h + 30.0) % 360.0; // Change color on bounce
-            sound.add_sound(*frame as usize,"./audio/bamG.wav", 1.0); // Add sound on bounce
-        }
-
+        
         // Bounce off colliders
         for collider in colliders {
             let dx = self.x - collider.x;
@@ -69,7 +48,7 @@ impl Ball {
             //Normals, balls supposed to be outside(true)
             if collider.normal && dist < self.radius + collider.radius {
                 trace!("Ball hit collider");
-                sound.add_sound(*frame as usize,"./audio/bamG.wav", 1.0); // Add sound on bounce
+                sound.add_sound(frame_num,"./audio/bamG.wav", collisions); // Add sound on bounce
                 // Simple elastic collision response
                 self.radius += 2.0;
                 let overlap = self.radius + collider.radius - dist;
@@ -84,8 +63,7 @@ impl Ball {
             }
             //Non-normals, ball is supposed to be inside(false)
             else if !collider.normal && dist > collider.radius - self.radius {
-                trace!("Ball hit collider");
-                sound.add_sound(*frame as usize,"./audio/bamG.wav", 1.0); // Add sound on bounce
+                sound.add_sound(frame_num,"./audio/bamG.wav", collisions); // Add sound on bounce
                 // Simple elastic collision response
 
                 self.radius += 2.0; // Grow the ball when it hits a non-normal collider
@@ -113,5 +91,12 @@ impl Ball {
             self.radius as i32,
             self.color.to_rgb(),
         );
+    }
+    fn bounce_wall(&mut self, sound: &mut Audio, collisions: &mut usize) {
+        trace!("Ball hit wall");
+        self.y = CONFIG.height as f32 - self.radius;
+        self.vy = -self.vy * self.restitution;
+        self.color.h = (self.color.h + 30.0) % 360.0; // Change color on bounce
+        sound.add_sound(0,"./audio/bamG.wav", collisions); // Add sound on bounce
     }
 }

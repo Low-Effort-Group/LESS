@@ -24,26 +24,22 @@ pub fn start() {
 
     info!("Recording {} frames at {}x{}", total_frames, CONFIG.width, CONFIG.height);
 
-    // let content: ContentType = TYPES[0];
-
-    // println!("simulation name: {}", content.name);
-    // println!("simulation descripticon: {}", content.description);
+    let mut collisions: usize = 0;
 
     //setup simulation
-    // let (mut balls, mut colliders) = crate::simulation::setupSimulation();
     let mut balls = CONFIG.balls.clone();
-    let mut colliders = crate::simulation::setup_simulation();
+    let mut colliders = simulation::setup_simulation();
     let mut sound = crate::audio::Audio::init_audio();
 
     let mut time = std::time::Instant::now();
-    for frame_num in 0..total_frames {
+    for frame_num in 0..total_frames as usize {
         let frame_start = std::time::Instant::now();
         // This draws the ball (ball.rs)
-        let img = simulation::new_frame(&mut balls, &mut colliders, &frame_num, &mut sound);
+        let img = simulation::new_frame(&mut balls, &mut colliders, frame_num, &mut sound, &mut collisions);
         
         encoder.write_frame(&img);
         
-        if frame_num % CONFIG.fps == 0 {
+        if frame_num % CONFIG.fps as usize == 0 {
             info!("Frame {}/{}, in {} seconds", frame_num, total_frames, time.elapsed().as_secs_f32());
             time = std::time::Instant::now();
         } else {

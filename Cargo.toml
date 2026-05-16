@@ -28,3 +28,6 @@ codegen-units = 1
 lto = "fat"
 strip = true
 opt-level = 3
+
+[profile.dev]
+opt-level = 3

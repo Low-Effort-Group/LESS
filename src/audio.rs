@@ -1,10 +1,13 @@
 use hound::{WavReader, WavWriter, WavSpec, SampleFormat};
 use tdpsola::{TdpsolaAnalysis, TdpsolaSynthesis, AlternatingHann, Speed};
+use log::*;
+use serde_json::Value;
 
 pub struct Audio {
     spec: WavSpec,
     writer: WavWriter<std::io::BufWriter<std::fs::File>>,
     samples_vector: Vec<f32>,
+    music: Vec<Vec<f32>>,
 }
 
 impl Audio {
@@ -16,11 +19,10 @@ impl Audio {
             sample_format: SampleFormat::Int,
         };
         let writer = WavWriter::create("output.wav", spec).unwrap();
-        Audio { spec, writer, samples_vector: Vec::new() }
+        Audio { spec, writer, samples_vector: Vec::new(), music: music("audio/test.csv") }
     }
-
-    pub fn add_sound(&mut self, frame: usize, filename: &str, pitch_shift: f32) {
-        let sample_number = frame * (self.spec.sample_rate as usize) / 60;
+    pub fn add_sound(&mut self, frame_num: usize, filename: &str, index: &mut usize) {
+        let sample_number = frame_num * (self.spec.sample_rate as usize) / 60;
         let reader = WavReader::open(filename).unwrap();
         let reader_samples: Vec<f32> = reader.into_samples::<i16>().map(|s| s.unwrap() as f32).collect();
 
@@ -31,7 +33,9 @@ impl Audio {
             analysis.push_sample(sample, &mut alternating_hann);
         }
 
-        let mut synthesis = TdpsolaSynthesis::new(Speed::from_f32(pitch_shift + 1.0), source_wavelength);
+        // Esse, implement shifting loop/iteration for loops here. remember self.music[i][*index % self.music.len()] as example.
+        trace!("Collisions: {index}, Music index: {}, shift: {:#?}", *index % self.music.len(), self.music[*index % self.music.len()]);
+        let mut synthesis = TdpsolaSynthesis::new(Speed::from_f32(self.music[*index % self.music.len()] + 1.0), source_wavelength);
         let processed_samples: Vec<f32> = synthesis.iter(&analysis).collect();
 
         let required_len = sample_number + processed_samples.len();
@@ -42,6 +46,7 @@ impl Audio {
         for (i, sample) in processed_samples.into_iter().enumerate() {
             self.samples_vector[sample_number + i] += sample;
         }
+        *index += 1;
     }
 
     pub fn finish_audio(mut self, total_frames: usize) {
@@ -54,4 +59,11 @@ impl Audio {
         }
         self.writer.finalize().unwrap();
     }
+}
+
+fn music(filename: &str) -> Vec<Vec<f32>> {
+    let sequence: Vec<Vec<f32>> = serde_json::from_str(&std::fs::read_to_string(filename).unwrap()).unwrap();    
+    trace!("{:#?}", sequence);
+
+    sequence
 }
