@@ -33,7 +33,7 @@ pub fn setup_simulation() -> Vec<Circle> {
     // (balls, colliders)
 }
 
-pub fn new_frame(balls: &mut Vec<Ball>, mut colliders: &mut Vec<Circle>, frame: &u32, mut sound: &mut Audio) -> RgbaImage {
+pub fn new_frame(balls: &mut Vec<Ball>, mut colliders: &mut Vec<Circle>, frame_num: usize, mut sound: &mut Audio, mut collisions: &mut usize) -> RgbaImage {
     let mut img = RgbaImage::new(CONFIG.width, CONFIG.height);
 
     //draw colliders
@@ -46,8 +46,8 @@ pub fn new_frame(balls: &mut Vec<Ball>, mut colliders: &mut Vec<Circle>, frame: 
     balls.iter_mut().for_each(|ball| {
         ball.update(1.0 / 60.0, 
             &mut colliders,
-            &frame,
-            &mut sound);
+            frame_num,
+            &mut sound, &mut collisions);
         ball.draw(&mut img);
     });//move ball to the inside of the collider
     img
