@@ -1,12 +1,13 @@
 use hound::{WavReader, WavWriter, WavSpec, SampleFormat};
 use tdpsola::{TdpsolaAnalysis, TdpsolaSynthesis, AlternatingHann, Speed};
 use log::*;
+use serde_json::Value;
 
 pub struct Audio {
     spec: WavSpec,
     writer: WavWriter<std::io::BufWriter<std::fs::File>>,
     samples_vector: Vec<f32>,
-    music: Vec<f32>,
+    music: Vec<Vec<f32>>,
 }
 
 impl Audio {
@@ -32,7 +33,8 @@ impl Audio {
             analysis.push_sample(sample, &mut alternating_hann);
         }
 
-        trace!("Collisions: {index}, Music index: {}, shift: {}", *index % self.music.len(), self.music[*index % self.music.len()]);
+        // Esse, implement shifting loop/iteration for loops here. remember self.music[i][*index % self.music.len()] as example.
+        trace!("Collisions: {index}, Music index: {}, shift: {:#?}", *index % self.music.len(), self.music[*index % self.music.len()]);
         let mut synthesis = TdpsolaSynthesis::new(Speed::from_f32(self.music[*index % self.music.len()] + 1.0), source_wavelength);
         let processed_samples: Vec<f32> = synthesis.iter(&analysis).collect();
 
@@ -59,12 +61,9 @@ impl Audio {
     }
 }
 
-fn music(filename: &str) -> Vec<f32> {
-    let sequence = std::fs::read_to_string(filename)
-        .unwrap_or("0.0".to_string())
-        .chars().filter(|&c| !c.is_whitespace()).collect::<String>()
-        .split(",").map(|s| s.parse::<f32>().unwrap()).collect();
-    
+fn music(filename: &str) -> Vec<Vec<f32>> {
+    let sequence: Vec<Vec<f32>> = serde_json::from_str(&std::fs::read_to_string(filename).unwrap()).unwrap();    
     trace!("{:#?}", sequence);
+
     sequence
 }
