@@ -60,7 +60,11 @@ impl Audio {
 }
 
 fn music(filename: &str) -> Vec<f32> {
-    let sequence = std::fs::read_to_string(filename).unwrap_or("0.0".to_string()).chars().filter(|&c| !c.is_whitespace()).collect::<String>().split(",").map(|s| s.parse::<f32>().unwrap()).collect();
+    let sequence = std::fs::read_to_string(filename)
+        .unwrap_or("0.0".to_string())
+        .chars().filter(|&c| !c.is_whitespace()).collect::<String>()
+        .split(",").map(|s| s.parse::<f32>().unwrap()).collect();
+    
     trace!("{:#?}", sequence);
     sequence
 }
